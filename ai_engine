@@ -1,0 +1,27 @@
+from transformers import pipeline
+
+def load_model():
+    return pipeline(
+        "text-generation",
+        model="google/flan-t5-base"
+    )
+
+def generate_analysis(llm, resume_text, jd_text):
+    prompt = f"""
+You are an AI Career Advisor.
+
+Provide:
+1. Match Score: (number between 0 to 100)
+2. Overall match assessment
+3. Key strengths
+4. Skill gaps
+5. Suggestions to improve the resume
+
+Resume:
+{resume_text}
+
+Job Description:
+{jd_text}
+"""
+    response = llm(prompt, max_length=512)
+    return response[0]["generated_text"]
